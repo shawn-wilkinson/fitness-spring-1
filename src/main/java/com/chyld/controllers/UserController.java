@@ -1,9 +1,11 @@
 package com.chyld.controllers;
 
 import com.chyld.dtos.AuthDto;
+import com.chyld.dtos.UserDto;
 import com.chyld.entities.Role;
 import com.chyld.entities.User;
 import com.chyld.enums.RoleEnum;
+import com.chyld.security.JwtToken;
 import com.chyld.services.RoleService;
 import com.chyld.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     private static final String EMAIL_EXISTS_MESSAGE = "This email is in use";
@@ -36,8 +42,8 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@Valid @RequestBody AuthDto auth) throws JsonProcessingException {
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<?> createUser(@Valid @RequestBody AuthDto auth) {
         final String requestedEmail = auth.getUsername();
 
         UserDetails ud =  userService.loadUserByUsername(requestedEmail);
@@ -56,5 +62,14 @@ public class UserController {
 
         User savedUser = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    }
+
+    @RequestMapping(value = "/credentials", method = RequestMethod.GET)
+    public UserDto credentials(Principal user) {
+        int uid = ((JwtToken)user).getUserId();
+        User u = userService.findUserById(uid);
+        List<String> roles = u.getRoles().stream().map(r -> r.getRole().toString()).collect(Collectors.toList());
+        UserDto userDto = new UserDto(u.getUsername(), roles);
+        return userDto;
     }
 }
