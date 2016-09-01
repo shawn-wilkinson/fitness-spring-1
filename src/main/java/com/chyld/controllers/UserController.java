@@ -4,17 +4,18 @@ import com.chyld.dtos.AuthDto;
 import com.chyld.entities.Role;
 import com.chyld.entities.User;
 import com.chyld.enums.RoleEnum;
-import com.chyld.utilities.JwtUtil;
 import com.chyld.services.RoleService;
 import com.chyld.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -24,16 +25,14 @@ public class UserController {
 
     private static final String EMAIL_EXISTS_MESSAGE = "This email is in use";
 
-    private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final RoleService roleService;
 
     @Autowired
-    public UserController(final UserService userService, final PasswordEncoder encoder, final JwtUtil jwtUtil, final RoleService roleService) {
+    public UserController(final UserService userService, final PasswordEncoder encoder, final RoleService roleService) {
         this.userService = userService;
         this.passwordEncoder = encoder;
-        this.jwtUtil = jwtUtil;
         this.roleService = roleService;
     }
 
@@ -56,8 +55,6 @@ public class UserController {
         user.getRoles().add(r);
 
         User savedUser = userService.saveUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 }

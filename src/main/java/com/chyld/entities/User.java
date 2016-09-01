@@ -23,6 +23,7 @@ public class User implements UserDetails {
     private String password;
     private boolean enabled;
     private List<Role> roles;
+    private Profile profile;
     private Date created;
     private Date modified;
 
@@ -50,6 +51,10 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     public List<Role> getRoles() {return roles;}
     public void setRoles(List<Role> roles) {this.roles = roles;}
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    public Profile getProfile() {return profile;}
+    public void setProfile(Profile profile) {this.profile = profile;}
 
     @CreationTimestamp
     public Date getCreated() {return created;}
