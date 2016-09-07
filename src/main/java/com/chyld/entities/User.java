@@ -1,6 +1,7 @@
 package com.chyld.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,8 +26,12 @@ public class User implements UserDetails {
     private List<Role> roles;
     private Profile profile;
     private List<Exercise> exercises;
+    private List<Device> devices;
     private Date created;
     private Date modified;
+
+    public User() {
+    }
 
     @Id
     @GeneratedValue
@@ -60,6 +65,10 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     public List<Exercise> getExercises() {return exercises;}
     public void setExercises(List<Exercise> exercises) {this.exercises = exercises;}
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public List<Device> getDevices() {return devices;}
+    public void setDevices(List<Device> devices) {this.devices = devices;}
 
     @CreationTimestamp
     public Date getCreated() {return created;}

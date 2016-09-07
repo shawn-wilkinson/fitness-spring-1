@@ -1,6 +1,7 @@
 package com.chyld.entities;
 
 import com.chyld.enums.RoleEnum;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.*;
 import org.springframework.security.core.GrantedAuthority;

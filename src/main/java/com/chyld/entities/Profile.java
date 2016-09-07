@@ -2,6 +2,7 @@ package com.chyld.entities;
 
 import com.chyld.enums.GenderEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
