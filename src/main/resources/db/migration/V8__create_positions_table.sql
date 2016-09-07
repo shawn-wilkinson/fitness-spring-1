@@ -1,9 +1,9 @@
 CREATE TABLE `fitness`.`positions` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `latitude` FLOAT NULL,
-  `longitude` FLOAT NULL,
-  `altitude` FLOAT NULL,
-  `current_time` DATETIME NULL,
+  `latitude` VARCHAR(45) NULL,
+  `longitude` VARCHAR(45) NULL,
+  `altitude` VARCHAR(45) NULL,
+  `time_received` DATETIME NULL,
   `run_id` INT NULL,
   `version` INT NULL,
   `created` TIMESTAMP NULL,
